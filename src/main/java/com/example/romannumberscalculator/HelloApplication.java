@@ -30,6 +30,8 @@ public class HelloApplication extends Application {
     @FXML
     private ImageView sumbutton;
     @FXML
+    private ImageView note;
+    @FXML
     private TextField numOne;
     @FXML
     private TextField numTwo;
@@ -37,6 +39,10 @@ public class HelloApplication extends Application {
     private Label messageOne;
     @FXML
     private Label messageTwo;
+    @FXML
+    private Label sumMessage;
+    @FXML
+    private Label result;
     @FXML
     private Button sumbtn;
 
@@ -50,14 +56,16 @@ public class HelloApplication extends Application {
         AnchorPane root = fxmlLoader.load();
 
 //        Rimski brojevi - Logika
-        RomanNumber rnOne = new RomanNumber();
-        RomanNumber rnTwo = new RomanNumber();
+        RomanNumber rnOne = new RomanNumber("");
+        RomanNumber rnTwo = new RomanNumber("");
+
     numOne.textProperty().addListener((observable, oldValue, newValue) -> {
         if(RomanNumber.isValidRomanNumber(newValue)) {
             rnOne.setRomanNumber(newValue);
             int rnValue = rnOne.romanToDecimal(rnOne.getRomanNumber());
             messageOne.setText(String.valueOf(rnValue));
         } else{
+            rnOne.setRomanNumber(newValue);
             messageOne.setText("Invalid Roman Number!");
         }
 
@@ -69,16 +77,31 @@ public class HelloApplication extends Application {
                 int rnValue = rnTwo.romanToDecimal(rnTwo.getRomanNumber());
                 messageTwo.setText(String.valueOf(rnValue));
             } else{
+                rnTwo.setRomanNumber(newValue);
                 messageTwo.setText("Invalid Roman Number!");
             }
         });
 
-    sumbtn.setOnAction(event -> RomanNumber.romanNumberSum();
+
+    sumbtn.setOnAction(event -> {
+        if(rnOne.getRomanNumber() == "" || rnTwo.getRomanNumber() == "") {
+            sumMessage.setText("Numbers must exist!");
+        }else if(!(RomanNumber.isValidRomanNumber(rnOne.getRomanNumber()) && RomanNumber.isValidRomanNumber(rnTwo.getRomanNumber()))) {
+            sumMessage.setText("Numbers must be valid!");
+        }else{
+            String romanNumberResult = RomanNumber.romanNumberSum(rnOne, rnTwo);
+            sumMessage.setText("");
+            result.setText(romanNumberResult);
+        }
+    });
+
 
         // Postavite scenu
         Scene scene = new Scene(root, 400, 550);
         Image icon = new Image(getClass().getResource("/images/icon.png").toExternalForm());
+
         stage.getIcons().add(icon);
+
         stage.setResizable(false);
         stage.setTitle("Numeri Romani Sum");
         scene.getStylesheets().add(getClass().getResource("/css/numeriRomaniSum.css").toExternalForm());
@@ -117,6 +140,14 @@ public class HelloApplication extends Application {
         } else {
             System.out.println("ImageView 'spqr' nije učitan.");
         }
+
+        if (note != null) {
+            Image noteIcon = new Image(getClass().getResource("/images/noteicon.png").toExternalForm());
+            note.setImage(noteIcon);  // Postavljanje slike na ImageView
+        } else {
+            System.out.println("ImageView 'spqr' nije učitan.");
+        }
+
 
 
 

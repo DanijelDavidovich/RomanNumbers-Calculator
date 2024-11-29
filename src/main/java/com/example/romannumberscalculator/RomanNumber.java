@@ -51,5 +51,7 @@ public class RomanNumber {
         return romanNumber != null && romanNumber.matches(romanRegex);
     }
 
-    public static String romanNumberSum(String romanNumberOne, String romanNumberTwo) {}
+    public static String romanNumberSum(RomanNumber romanNumberOne, RomanNumber romanNumberTwo) {
+        return romanNumberOne.getRomanNumber() + " + " + romanNumberTwo.getRomanNumber();
+    }
 }
