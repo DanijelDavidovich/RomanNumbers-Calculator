@@ -12,20 +12,32 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.10.2</junit.version>
+        <java.version>23</java.version> <!-- Koristi JDK 23 -->
     </properties>
 
     <dependencies>
+        <!-- JavaFX Controls (UI komponenta) -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>17.0.6</version>
+            <version>20</version> <!-- Verzija JavaFX-a koju koristiš -->
         </dependency>
+
+        <!-- JavaFX FXML (Za korišćenje FXML fajlova) -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>17.0.6</version>
+            <version>20</version>
         </dependency>
 
+        <!-- JavaFX Media (Za rad sa audio i video fajlovima) -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
+            <version>20</version> <!-- Ova zavisnost je potrebna za Media i MediaPlayer -->
+        </dependency>
+
+        <!-- JUnit za testiranje -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -42,33 +54,27 @@
 
     <build>
         <plugins>
+            <!-- Maven Compiler Plugin za JDK 23 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
                 <configuration>
-                    <source>23</source>
-                    <target>23</target>
+                    <source>${java.version}</source> <!-- Postavi verziju JDK koju koristiš -->
+                    <target>${java.version}</target> <!-- Isto za target -->
                 </configuration>
             </plugin>
+
+            <!-- JavaFX Maven Plugin za pokretanje aplikacije -->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <executions>
                     <execution>
-                        <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>
-                                com.example.romannumberscalculator/com.example.romannumberscalculator.HelloApplication
-                            </mainClass>
-                            <launcher>app</launcher>
-                            <jlinkZipName>app</jlinkZipName>
-                            <jlinkImageName>app</jlinkImageName>
-                            <noManPages>true</noManPages>
-                            <stripDebug>true</stripDebug>
-                            <noHeaderFiles>true</noHeaderFiles>
+                            <mainClass>com.example.romannumberscalculator.HelloApplication</mainClass>
                         </configuration>
                     </execution>
                 </executions>

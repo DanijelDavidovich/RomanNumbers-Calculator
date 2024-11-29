@@ -11,6 +11,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.TextField;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 
 import java.io.IOException;
@@ -45,6 +47,11 @@ public class HelloApplication extends Application {
     private Label result;
     @FXML
     private Button sumbtn;
+    @FXML
+    private Button musicbtn;
+
+    private MediaPlayer mediaPlayer;
+    private boolean isPlaying = true;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -95,6 +102,21 @@ public class HelloApplication extends Application {
         }
     });
 
+    musicbtn.setOnAction(event -> {
+        if (isPlaying) {
+            // Pauzira muziku
+            mediaPlayer.pause();
+//            playPauseButton.setText("Play"); // Promena teksta na dugmetu na "Play"
+        } else {
+            // Pokreće muziku
+            mediaPlayer.play();
+//            playPauseButton.setText("Pause"); // Promena teksta na dugmetu na "Pause"
+        }
+
+        // Promenjuje stanje (da bi se dugme promenilo pri sledećem kliku)
+        isPlaying = !isPlaying;
+    });
+
 
         // Postavite scenu
         Scene scene = new Scene(root, 400, 550);
@@ -141,17 +163,40 @@ public class HelloApplication extends Application {
             System.out.println("ImageView 'spqr' nije učitan.");
         }
 
-        if (note != null) {
-            Image noteIcon = new Image(getClass().getResource("/images/noteicon.png").toExternalForm());
-            note.setImage(noteIcon);  // Postavljanje slike na ImageView
-        } else {
-            System.out.println("ImageView 'spqr' nije učitan.");
-        }
+//        if (note != null) {
+//            Image noteIcon = new Image(getClass().getResource("/images/noteicon.png").toExternalForm());
+//            note.setImage(noteIcon);  // Postavljanje slike na ImageView
+//        } else {
+//            System.out.println("ImageView 'spqr' nije učitan.");
+//        }
+
+//        Audio Player
+
+        String audioFilePath = getClass().getResource("/audio/romanaudio.mp3").toExternalForm(); // Putanja do audio fajla
+        Media media = new Media(audioFilePath);
+        mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setAutoPlay(true);
 
 
 
 
     }
+
+//    private void togglePlayPause() {
+//        if (isPlaying) {
+//            // Pauzira muziku
+//            mediaPlayer.pause();
+//            playPauseButton.setText("Play"); // Promena teksta na dugmetu na "Play"
+//        } else {
+//            // Pokreće muziku
+//            mediaPlayer.play();
+//            playPauseButton.setText("Pause"); // Promena teksta na dugmetu na "Pause"
+//        }
+//
+//        // Promenjuje stanje (da bi se dugme promenilo pri sledećem kliku)
+//        isPlaying = !isPlaying;
+//    }
+
 
     public static void main(String[] args) {
         launch();
