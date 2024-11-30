@@ -17,8 +17,6 @@ import javafx.scene.media.MediaPlayer;
 
 import java.io.IOException;
 
-import static com.example.romannumberscalculator.RomanNumber.romanNumberSum;
-
 public class HelloApplication extends Application {
 
     @FXML
@@ -49,11 +47,16 @@ public class HelloApplication extends Application {
     private Label result;
     @FXML
     private Button sumbtn;
-    @FXML
-    private Button musicbtn;
+//    @FXML
+////    private Button musicbtn;
+//    @FXML
+//    private ImageView musicbtnicon;
 
     private MediaPlayer mediaPlayer;
     private boolean isPlaying = true;
+
+    private Image playImage = new Image(getClass().getResourceAsStream("/images/play.png"));
+    private Image pauseImage = new Image(getClass().getResourceAsStream("/images/pause.png"));
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -98,19 +101,23 @@ public class HelloApplication extends Application {
         }else if(!(RomanNumber.isValidRomanNumber(rnOne.getRomanNumber()) && RomanNumber.isValidRomanNumber(rnTwo.getRomanNumber()))) {
             sumMessage.setText("Numbers must be valid!");
         }else{
-            String romanNumberResult = romanNumberSum(rnOne, rnTwo);
+            String romanNumberResult = RomanNumber.romanNumberSum(rnOne, rnTwo);
             sumMessage.setText("");
             result.setText(romanNumberResult);
         }
     });
 
+
     musicbtn.setOnAction(event -> {
+
         if (isPlaying) {
             // Pauzira muziku
             mediaPlayer.pause();
+            musicbtnicon.setImage(playImage);
 //            playPauseButton.setText("Play"); // Promena teksta na dugmetu na "Play"
         } else {
             // Pokreće muziku
+            musicbtnicon.setImage(pauseImage);
             mediaPlayer.play();
 //            playPauseButton.setText("Pause"); // Promena teksta na dugmetu na "Pause"
         }
@@ -165,12 +172,12 @@ public class HelloApplication extends Application {
             System.out.println("ImageView 'spqr' nije učitan.");
         }
 
-//        if (note != null) {
-//            Image noteIcon = new Image(getClass().getResource("/images/noteicon.png").toExternalForm());
-//            note.setImage(noteIcon);  // Postavljanje slike na ImageView
-//        } else {
-//            System.out.println("ImageView 'spqr' nije učitan.");
-//        }
+        if (note != null) {
+            Image noteIcon = new Image(getClass().getResource("/images/sound.png").toExternalForm());
+            note.setImage(noteIcon);  // Postavljanje slike na ImageView
+        } else {
+            System.out.println("ImageView 'spqr' nije učitan.");
+        }
 
 //        Audio Player
 
