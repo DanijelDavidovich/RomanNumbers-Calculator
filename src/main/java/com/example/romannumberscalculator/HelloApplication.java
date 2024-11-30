@@ -17,6 +17,8 @@ import javafx.scene.media.MediaPlayer;
 
 import java.io.IOException;
 
+import static com.example.romannumberscalculator.RomanNumber.romanNumberSum;
+
 public class HelloApplication extends Application {
 
     @FXML
@@ -96,7 +98,7 @@ public class HelloApplication extends Application {
         }else if(!(RomanNumber.isValidRomanNumber(rnOne.getRomanNumber()) && RomanNumber.isValidRomanNumber(rnTwo.getRomanNumber()))) {
             sumMessage.setText("Numbers must be valid!");
         }else{
-            String romanNumberResult = RomanNumber.romanNumberSum(rnOne, rnTwo);
+            String romanNumberResult = romanNumberSum(rnOne, rnTwo);
             sumMessage.setText("");
             result.setText(romanNumberResult);
         }
