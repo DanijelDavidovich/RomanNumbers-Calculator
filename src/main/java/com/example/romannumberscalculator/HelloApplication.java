@@ -22,39 +22,36 @@ public class HelloApplication extends Application {
 
     @FXML
     private AnchorPane rnbackground;
+    @FXML
+    private ImageView spqr; // Za prikaz gornjeg grba
+    @FXML
+    private ImageView coatofarms; // Za prikaz donjeg grba
+    @FXML
+    private ImageView title; // Naslov: Numeri Romani Sum
+    @FXML
+    private ImageView note; // Za prikaz note
+    @FXML
+    private TextField numOne; // Polje za upis prvog broja
+    @FXML
+    private TextField numTwo; // Polje za upis drugog broja
+    @FXML
+    private Label messageOne; // Za ispis poruke ispod prvog polja
+    @FXML
+    private Label messageTwo; // Za ispis poruke ispod drugog polja
+    @FXML
+    private Label sumMessage; // Za ispis poruke ispod polja gdje se prikazuje suma
+    @FXML
+    private Label result; // Za ispis rezultata
+    @FXML
+    private Button sumbtn; // Button za sumiranje
+    @FXML
+    private Button musicbtn; // Button za pause i play muzike
+    @FXML
+    private ImageView btnicon; // Ikonica koja se nalazi u plaz/pause button-u
 
-    // fx:id "spqr" iz SceneBuilder-a
-    @FXML
-    private ImageView spqr;
-    @FXML
-    private ImageView coatofarms;
-    @FXML
-    private ImageView title;
-    @FXML
-    private ImageView sumbutton;
-    @FXML
-    private ImageView note;
-    @FXML
-    private TextField numOne;
-    @FXML
-    private TextField numTwo;
-    @FXML
-    private Label messageOne;
-    @FXML
-    private Label messageTwo;
-    @FXML
-    private Label sumMessage;
-    @FXML
-    private Label result;
-    @FXML
-    private Button sumbtn;
-    @FXML
-    private Button musicbtn;
-    @FXML
-    private ImageView btnicon;
+    private MediaPlayer mediaPlayer; // Kreira se muzicki player
+    private boolean isPlaying = true; // Setujemo da muzika pocinje pri pokretanju aplikacije
 
-    private MediaPlayer mediaPlayer;
-    private boolean isPlaying = true;
     private Image playImage = new Image(getClass().getResourceAsStream("/images/play.png"));
     private Image pauseImage = new Image(getClass().getResourceAsStream("/images/pause.png"));
 
@@ -62,17 +59,19 @@ public class HelloApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        // Eksplicitno postavite kontroler pri učitavanju FXML-a
+        // Eksplicitno postavljamo kontroler pri učitavanju FXML-a
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("roman-numbers-app.fxml"));
-        fxmlLoader.setController(this); // Postavljanje kontrolera na trenutni objekat
+        fxmlLoader.setController(this); // Postavljamo kontroler na trenutni objekat
 
-        // Učitaj FXML fajl
-        AnchorPane root = fxmlLoader.load();
+        AnchorPane root = fxmlLoader.load(); // Učitaj FXML fajl
 
-//        Rimski brojevi - Logika
+//  UCITAVAMO RIMSKE BROJEVE
+
         RomanNumber rnOne = new RomanNumber("");
         RomanNumber rnTwo = new RomanNumber("");
 
+    // Poziv metode koja kupi unos u polje pri svakom keystroke-u, probjerava validnost. Ako je ok, setuj objekat
+        // i ispisi decimalnu vrijednost ispod, a ako nije ok, ispisi poruku ispod polje
     numOne.textProperty().addListener((observable, oldValue, newValue) -> {
         if(RomanNumber.isValidRomanNumber(newValue)) {
             rnOne.setRomanNumber(newValue);
@@ -84,7 +83,7 @@ public class HelloApplication extends Application {
         }
 
     });
-
+    // Za drugi broj
     numTwo.textProperty().addListener((observable, oldValue, newValue) -> {
             if(RomanNumber.isValidRomanNumber(newValue)) {
                 rnTwo.setRomanNumber(newValue);
@@ -96,7 +95,12 @@ public class HelloApplication extends Application {
             }
         });
 
+//    SUMIRANJE
 
+//        Klikom na button Sum, trigger-uje se metoda. Provjerava da li brojevi postoje. Ako ne, ispise poruku.
+//        Ako da, provjerava validnost. Ako bar jedan nije validan, ispise poruku.
+//        Ako postoje i ako su validni, poziva se staticka metoda za sumiranje, dobijamo String koji ispisemo
+//        a ispod polja se ispise i njegova decimalna vrijednost.
     sumbtn.setOnAction(event -> {
         if(rnOne.getRomanNumber() == "" || rnTwo.getRomanNumber() == "") {
             sumMessage.setText("Numbers must exist!");
@@ -110,42 +114,25 @@ public class HelloApplication extends Application {
     });
 
 
-    musicbtn.setOnAction(event -> {
-        if (isPlaying) {
-            // Pauzira muziku
-            mediaPlayer.pause();
-            btnicon.setImage(playImage);
-//            playPauseButton.setText("Play"); // Promena teksta na dugmetu na "Play"
-        } else {
-            // Pokreće muziku
-            btnicon.setImage(pauseImage);
-            mediaPlayer.play();
-//            playPauseButton.setText("Pause"); // Promena teksta na dugmetu na "Pause"
-        }
-
-        // Promenjuje stanje (da bi se dugme promenilo pri sledećem kliku)
-        isPlaying = !isPlaying;
-    });
 
 
-        // Postavite scenu
-        Scene scene = new Scene(root, 400, 550);
-        Image icon = new Image(getClass().getResource("/images/icon.png").toExternalForm());
+//  POSTAVKA SCENE
 
-        stage.getIcons().add(icon);
+        Scene scene = new Scene(root, 400, 550); // Kreira se scena sa dimenzijama prozora
+        Image icon = new Image(getClass().getResource("/images/icon.png").toExternalForm()); // Nova ikonica prozora
 
-        stage.setResizable(false);
-        stage.setTitle("Numeri Romani Sum");
-        scene.getStylesheets().add(getClass().getResource("/css/numeriRomaniSum.css").toExternalForm());
-        stage.setScene(scene);
-        stage.show();
+        stage.getIcons().add(icon); // Postavljanje ikonice
+
+        stage.setResizable(false); // Zabrana minenjanja dimenzija prozora
+        stage.setTitle("Numeri Romani Sum"); // Naslov
+        scene.getStylesheets().add(getClass().getResource("/css/numeriRomaniSum.css").toExternalForm()); // Povezivanje sa CSS file-om
+        stage.setScene(scene); // Setovanje scene
+        stage.show(); // Prikaz scene
     }
 
     // Ova metoda se automatski poziva nakon što je FXML učitan
     @FXML
     public void initialize() {
-
-
 
         btnicon.setImage(pauseImage);
 
@@ -185,7 +172,7 @@ public class HelloApplication extends Application {
             System.out.println("ImageView 'spqr' nije učitan.");
         }
 
-//        Audio Player
+// PODZADINSKA MUZIKA
 
         String audioFilePath = getClass().getResource("/audio/romanaudio.mp3").toExternalForm(); // Putanja do audio fajla
         Media media = new Media(audioFilePath);
@@ -196,25 +183,20 @@ public class HelloApplication extends Application {
             mediaPlayer.play();               // Ponovo pokrenite muziku
         });
 
-
-
+// Muzika pocinje sa pokretanjem aplikacije. Klikom na dugme play/pause trigger-uje se ova metoda
+        musicbtn.setOnAction(event -> {
+            if (isPlaying) {
+                // stop
+                mediaPlayer.pause(); // zaustavlja muziku
+                btnicon.setImage(playImage); // mijenja ikonicu na play
+            } else {
+                // start
+                btnicon.setImage(pauseImage); // pusta muziku
+                mediaPlayer.play(); // mijenja ikonicu na pause
+            }
+            isPlaying = !isPlaying; // mijenja stanje pri svakom kliku na button
+        });
     }
-
-//    private void togglePlayPause() {
-//        if (isPlaying) {
-//            // Pauzira muziku
-//            mediaPlayer.pause();
-//            playPauseButton.setText("Play"); // Promena teksta na dugmetu na "Play"
-//        } else {
-//            // Pokreće muziku
-//            mediaPlayer.play();
-//            playPauseButton.setText("Pause"); // Promena teksta na dugmetu na "Pause"
-//        }
-//
-//        // Promenjuje stanje (da bi se dugme promenilo pri sledećem kliku)
-//        isPlaying = !isPlaying;
-//    }
-
 
     public static void main(String[] args) {
         launch();
