@@ -3,17 +3,25 @@ package com.example.romannumberscalculator;
 import java.util.*;
 
 public class RomanNumber {
-    private String romanNumber;
-//    private ArrayList<String> simpleDigits = new ArrayList<>();
-//    private ArrayList<String> complexDigits = new ArrayList<>();
 
+    //    ATRIBUTI
+
+    private String romanNumber;
+
+    // Lista za cifre I V X L C D M
     private static ArrayList<String> simpleDigitList = new ArrayList<>();
+    // Lista za kompleksne cifre IV IX XL XC CD CM
     private static ArrayList<String> complexDigitList = new ArrayList<>();
+    // Privremena pomocna lista za kompleksne cifre
     private static ArrayList<String> tempComplexDigits = new ArrayList<>();
+
     private static int sortCounter = 0;
     private static boolean resultChecker = true;
+
+    // Konacan rezultat
     private static String resultString = "";
 
+    //  SETERI I GETERI
     public RomanNumber() {}
     public RomanNumber(String romanNumber) {
         this.romanNumber = romanNumber;
@@ -25,7 +33,9 @@ public class RomanNumber {
         this.romanNumber = romanNumber;
     }
 
+    //  METODE
 
+    // Pomocna metoda koja pretvara rimski broj u decimalni i sluzi samo konverziju prije ispisa
     public static int romanToDecimal(String romanNumber) {
         Map<Character, Integer> romanNumbersMap = new HashMap<Character, Integer>();
         romanNumbersMap.put('I', 1);
@@ -47,6 +57,7 @@ public class RomanNumber {
         return decimal;
     }
 
+    // Metode za validaciju
     public static boolean isValidRomanNumber(String romanNumber) {
         String romanRegex = "^(M{0,3})" +              // 1000-3000
                 "(CM|CD|D?C{0,3})" +        // 900, 400, 0-300
@@ -56,33 +67,45 @@ public class RomanNumber {
         return romanNumber != null && romanNumber.matches(romanRegex);
     }
 
+    public static boolean lesThenMChecker(String romanNumber) {
+        String romanRegex = "^(M{0,1})" +
+                "(CM|CD|D?C{0,3})" +
+                "(XC|XL|L?X{0,3})" +
+                "(IX|IV|V?I{0,3})$";
+        return romanNumber != null && romanNumber.matches(romanRegex);
+    }
+
+    // Pomocna metoda za validaciju
     public static boolean isValidRomanNumberResult() {
         String romanNumber = String.join("", simpleDigitList);
         return isValidRomanNumber(romanNumber);
     }
 
+//  SUMIRANJE
+//    Glavna metoda za sumiranje 2 rimska broja
     public static String romanNumberSum(RomanNumber romanNumberOne, RomanNumber romanNumberTwo) {
+//        Brise prethodno stanje listi (kada se izmijene unosi brojeva)
         simpleDigitList.clear();
         complexDigitList.clear();
+        resultString = "";
 
+//        Razdvaja oba rimska broja na simple (I V...) i complex (IV IX...)
         separateDigits(romanNumberOne);
         separateDigits(romanNumberTwo);
 
-//
+//        Poziv metode koji ce zapoceti cijeli proces sumiranja
         joinSimpleDigits();
 
-//        complexResult = joinComplexDigits(romanNumberOne.complexDigits, romanNumberTwo.complexDigits);
-//        result = joinResults(simpleResult, complexResult);
-
+//        Vracanje konacnog rezultata
         return resultString;
     };
 
+//    Metoda za separaciju simple i complex cifri te njihovo smijestanje u odredjene liste
     private static void separateDigits(RomanNumber romanNumber) {
         resultChecker = true;
-        String romanDigits = romanNumber.getRomanNumber();
-//        ArrayList<String> complexDigits = new ArrayList<>();
-//        ArrayList<String> simpleDigits = new ArrayList<>();
+        String romanDigits = romanNumber.getRomanNumber(); // Vraca broj kao String
         tempComplexDigits.clear();
+//      Algoritam koji trazi complex cifre i prebacuje ih u odgovorajucu listu dok ih istovremeno prepisuje sa ""
         for(int i=0; i<6; i++){
             switch(i){
                 case 0:
@@ -117,6 +140,7 @@ public class RomanNumber {
                     break;
             }
         }
+//        Kako su nam sada ostale samo simple cifre, smjestiti ih kao char-ove u njihovu listu
         char[] simpleNumbers = romanDigits.toCharArray();
         for(char c : simpleNumbers){
             simpleDigitList.add(c + "");
@@ -124,9 +148,15 @@ public class RomanNumber {
 
 
     }
+
+//    Metoda koja spaja simple cifre oba broja u jednu listu, potom broji koliko kojih ima. Za slucaj da se
+//    pojave nevalidni oblici poput IIII+, ili VV+ itd. pretvori ih u validan: IV, X
+//    te ako kao takvi postanu complex oblika, prebaci ih u complex listu, a za slucaj da se
+//    u simple listi nadju kompleksne cifre pri validnom obliku broja, ostaju tu.
+//    Ukoliko complex lista nije prazna, poziva se metoda za njenu obradu.
+//    Ukoliko je prazna, poziva se metoda za sortiranje i dodatna izracunavanja ukoliko se pojave nevalidni oblici.
+//    Te na kraju, kada se sva izracunavanja zavrse a broj je validan, smijesta se rezultat i cisti lista
     private static void joinSimpleDigits(){
-        System.out.println("Ulazni simple: " + simpleDigitList);
-        System.out.println("Ulazni complex: " + complexDigitList);
         simpleSort();
         ArrayList<String> temp = new ArrayList<>();
         int countedI = 0;
@@ -142,7 +172,7 @@ public class RomanNumber {
         int countedXC = 0;
         int countedCD = 0;
         int countedCM = 0;
-        System.out.println("Duzina: simple: " + simpleDigitList.size());
+
         for(String digit : simpleDigitList){
             if(digit.equals("I")) countedI++;
             else if(digit.equals("V")) countedV++;
@@ -151,6 +181,7 @@ public class RomanNumber {
             else if(digit.equals("C")) countedC++;
             else if(digit.equals("D")) countedD++;
             else if(digit.equals("M")) countedM++;
+//            Za slucaj da su jedini ovakvog tipa u validnom poretku:
             else if(digit.equals("IV")) countedIV++;
             else if(digit.equals("IX")) countedIX++;
             else if(digit.equals("XL")) countedXL++;
@@ -162,10 +193,7 @@ public class RomanNumber {
         if(complexDigitList.size() == 0 || isValidRomanNumberResult() )
             sortCounter = 5;
 
-        System.out.println(complexDigitList.size()!=0);
-        System.out.println(!isValidRomanNumberResult());
         if(sortCounter!=5 || complexDigitList.size()!=0 || tempComplexDigits.size()!=0 || !isValidRomanNumberResult()) {
-
             if (countedM != 0)
                 if (countedM == 4) complexDigitList.add(HashMapCounter.countM.get(countedM));
                 else {
@@ -220,11 +248,12 @@ public class RomanNumber {
                         temp.add("I");
                     } else temp.add(HashMapCounter.countI.get(countedI));
                 }
+//                Ukoliko je broj nevalidan, ponovo complex cifre prebaci u complex listu na dalju obradu
                 if(countedIV != 0){
                     for(int i=0; i<countedIV; i++)
                         if(isValidRomanNumberResult())
                             simpleDigitList.add("IV");
-                            else
+                        else
                             complexDigitList.add("IV");
                 }
                 if(countedIX != 0){
@@ -233,44 +262,51 @@ public class RomanNumber {
                             simpleDigitList.add("IX");
                         else
                             complexDigitList.add("IX");
-            }
-            if(countedXL != 0){
-                for(int i=0; i<countedXL; i++)
-                    if(isValidRomanNumberResult())
-                        simpleDigitList.add("XL");
-                    else
-                        complexDigitList.add("XL");
-            }
-            if(countedXC != 0){
-                for(int i=0; i<countedXC; i++)
-                    if(isValidRomanNumberResult())
-                        simpleDigitList.add("XC");
-                    else
-                        complexDigitList.add("XC");
-            }
-            if(countedCD != 0){
-                for(int i=0; i<countedCD; i++)
-                    if(isValidRomanNumberResult())
-                        simpleDigitList.add("CD");
-                    else
-                        complexDigitList.add("CD");
-            }
-            if(countedCM != 0){
-                for(int i=0; i<countedCM; i++)
-                    if(isValidRomanNumberResult())
-                        simpleDigitList.add("CM");
-                    else
-                        complexDigitList.add("CM");
-            }
+                }
+                if(countedXL != 0){
+                    for(int i=0; i<countedXL; i++)
+                        if(isValidRomanNumberResult())
+                            simpleDigitList.add("XL");
+                        else
+                            complexDigitList.add("XL");
+                }
+                if(countedXC != 0){
+                    for(int i=0; i<countedXC; i++)
+                        if(isValidRomanNumberResult())
+                            simpleDigitList.add("XC");
+                        else
+                            complexDigitList.add("XC");
+                }
+                if(countedCD != 0){
+                    for(int i=0; i<countedCD; i++)
+                        if(isValidRomanNumberResult())
+                            simpleDigitList.add("CD");
+                        else
+                            complexDigitList.add("CD");
+                }
+                if(countedCM != 0){
+                    for(int i=0; i<countedCM; i++)
+                        if(isValidRomanNumberResult())
+                            simpleDigitList.add("CM");
+                        else
+                            complexDigitList.add("CM");
+                }
 
-
+//                Ciscenje simple liste, dodavanje novonapravljene, dodavanje complex cifara ukoliko su jedinie takve
             simpleDigitList.clear();
             simpleDigitList.addAll(temp);
             simpleDigitList.addAll(tempComplexDigits);
             tempComplexDigits.clear();
+
+//          Kada se to sve zavrsi, provjerava se da li je lista comlex cifara prazna. Ako nije, obradi je,
+//            saberi sta moze (obicno duple complex cifre istog nivoa), ostavi sta ne moze i sve vrati u simple listu
             if(complexDigitList.size()!=0)
                 joinComplexDigits();
 
+//            Ukoliko je complex lista prazna a broj je idalje nevalidan, poziva se metoda za sortiranje i
+//            dodatna izracunavanja. Posto cesto taj rpoces mora da se obavi vise puta, pri stalnom azuriranju
+//            simple liste i pozivanja joinSimpleDigits, najvise je potrebno 5 puta da se ponovi, a mora da stoji
+//            kako se ne bi uslo u beskonacnu petlju
             if(sortCounter!=5 || (complexDigitList.size()==0 && !isValidRomanNumberResult())) {
                 sortCounter++;
                 simpleDigitList.addAll(tempComplexDigits);
@@ -278,11 +314,7 @@ public class RomanNumber {
             }
         }
 
-
-        System.out.println("Simple: " + simpleDigitList);
-        System.out.println("Complex: " + complexDigitList);
-
-
+//        Smijestanje rezultata u staticki atribut za rezultat odakle ce se kasnije ispisati
         if(isValidRomanNumberResult() && resultChecker){
             resultChecker = false;
             String konacanRezultat = String.join("", simpleDigitList);
@@ -290,11 +322,15 @@ public class RomanNumber {
             resultString = String.join("", simpleDigitList);
         }
 
+//        Ciscenje liste za sledece brojeve
         simpleDigitList.clear();
 
     }
+
+//    Metoda koja se bavi obradom liste complex cifara, te kada ih obradi i vrati u listu simple cifara
+//    poziva ponovo petodu za obradu liste simple cifara
     private static void joinComplexDigits(){
-//        String temp="";
+
         int countedIV = 0;
         int countedIX = 0;
         int countedXL = 0;
@@ -309,52 +345,21 @@ public class RomanNumber {
             else if(digit.equals("XC")) {countedXC++;}
             else if(digit.equals("CD")) {countedCD++;}
             else if(digit.equals("CM")) {countedCM++;}
-
-
-//            if(countedIV!=0 || countedIX != 0){
-//                if(countedIV == 2){
-//                    temp = HashMapCounter.countIV.get(countedIV);
-//                    for(char c : temp.toCharArray() )
-//                        complexDigitList.add(c + "");
-//                } else if(countedIX == 2){
-//                    temp = HashMapCounter.countIX.get(countedIX);
-//                    for(char c : temp.toCharArray() )
-//                        complexDigitList.add(c + "");
-//                }else if(countedIV == 1 && countedIX == 1){
-//                    temp = "XIII";
-//                    for(char c : temp.toCharArray() )
-//                        complexDigitList.add(c + "");
-//                }
-//                else if(countedIV == 3){
-//                    temp = HashMapCounter.countIX.get(countedIV);
-//                    for(char c : temp.toCharArray() )
-//                        complexDigitList.add(c + "");
-//                }else if(countedIX == 3){
-//                    temp = HashMapCounter.countIX.get(countedIX);
-//                    for(char c : temp.toCharArray() )
-//                        complexDigitList.add(c + "");
-//                }else if(countedIV == 2 && countedIX == 1){
-//                    temp = "XVII";
-//                    for(char c : temp.toCharArray() )
-//                        complexDigitList.add(c + "");
-//                }else if(countedIV == 1 && countedIX == 2){
-//                    temp = "XXII";
-//                    for(char c : temp.toCharArray() )
-//                        complexDigitList.add(c + "");
-//                }
-//            }
         }
+
         complexDigitList.clear();
 
+//        Kako se mogu sabirati parovi samo istog tipa (IV-IX, XL-xC, CD-CM), ovde se u pomocnu metodu
+//        za obradu salje koliko ima kojih cifara, kog su tipa i kako izgledaju
         typeComplexDigitsHandler(countedIV, countedIX, 'I', "IV", "IX");
         typeComplexDigitsHandler(countedXL, countedXC, 'X', "XL", "XC");
         typeComplexDigitsHandler(countedCD, countedCM, 'C', "CD", "CM");
 
         joinSimpleDigits();
     }
-//    private static String joinResults(String[] simpleResult, String[] complexResult){
-//
-//    }
+
+//    Pomocna metoda koja na osnovu tipa i broja cifara vrsi njihovo sabiranje ako je moguce
+//    te vraca nazad u listu simple cifara
     private static void typeComplexDigitsHandler(int countedA, int countedB, char type, String digitA, String digitB){
         String temp="";
         if(countedA!=0 || countedB != 0){
@@ -451,15 +456,23 @@ public class RomanNumber {
         }
     }
 
+//    Pomocna metoda za sortiranja i dodatne obrade
+//    Prvo preko Hash mape napravimo novu listu gdje je svaka rimska cifra ima svoj kljuc u obliku integer-a
+//    redom (I-1, IV-2, V-3...). Sada imamo listu integer-a koju sortiramo, potom ulazimo u petlju koja se
+//    rjesava nevalidnih oblika ( npr.ako imamo IX i I+ u listi, ponistava ta 2 I, i ostaje samo X), te nakon
+//    toga konvertujemo ponovo na osnovu Hash tabele listu nazad da dobijemo rimske cifre, i vracamo ponovo u
+//    simple listu te opet pozivamo funkciju za obradu simple liste. Ovo ce se ponavljati sve dok broj ne postane
+//    validan.
     public static void romanDigitsSortAndEdit() {
+
         ArrayList<Integer> valueList = new ArrayList<>();
-        System.out.println("Lista za sortiranje: " + simpleDigitList);
+
         for (String digit : simpleDigitList) {
             valueList.add(HashMapCounter.romanToValue.get(digit));
         }
-        System.out.println("Po Hash vriednostima: " + valueList);
+
         valueList.sort((a, b) -> b.compareTo(a));
-        System.out.println("Sortirano: " + valueList);
+
         if(!isValidRomanNumberResult())
             for (int i = 0; i < valueList.size(); i++) {
                 System.out.println(valueList.get(i));
@@ -468,7 +481,6 @@ public class RomanNumber {
                 int nextDigit = valueList.get(i + 1);
                 System.out.println(nextDigit);
                 if (nextDigit == 1) {
-                    System.out.println("Rsjesavanje IV ili IX");
                     if (valueList.get(i) == 2) {
                         valueList.set(i, 3);
                         valueList.remove(i + 1);
@@ -478,7 +490,6 @@ public class RomanNumber {
                     }
                 }
                 if (nextDigit == 5) {
-                    System.out.println("Rsjesavanje XL ili XC");
                     if (valueList.get(i) == 6){
                         valueList.set(i, 7);
                         valueList.remove(i + 1);
@@ -488,7 +499,6 @@ public class RomanNumber {
                     }
                 }
                 if (nextDigit == 9) {
-                    System.out.println("Rsjesavanje CD ili CM");
                     if (valueList.get(i) == 10){
                         valueList.set(i, 11);
                         valueList.remove(i + 1);
@@ -502,16 +512,19 @@ public class RomanNumber {
 
             }
         }
-        System.out.println("Obradjeno: " + valueList);
+
         tempComplexDigits.clear();
         simpleDigitList.clear();
         for(Integer value : valueList){
             simpleDigitList.add(HashMapCounter.valueToRoman.get(value));
         }
+
         joinSimpleDigits();
     }
 
+//    metoda za jednostavno sortiranje bez dodatne obrade
     public static void simpleSort(){
+
         ArrayList<Integer> valueList = new ArrayList<>();
 
         for (String digit : simpleDigitList) {
@@ -525,6 +538,7 @@ public class RomanNumber {
         }
     }
 
+//    metoda koja vraca sam rezultat
     public static String getResultString(){
         return resultString;
     }

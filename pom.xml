@@ -74,7 +74,7 @@
                     <execution>
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.example.romannumberscalculator.HelloApplication</mainClass>
+                            <mainClass>com.example.romannumberscalculator.RomanNumbersCalculator</mainClass>
                         </configuration>
                     </execution>
                 </executions>

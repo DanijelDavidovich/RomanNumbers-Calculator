@@ -18,7 +18,7 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class RomanNumbersCalculator extends Application {
 
     @FXML
     private AnchorPane rnbackground;
@@ -60,7 +60,7 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         // Eksplicitno postavljamo kontroler pri učitavanju FXML-a
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("roman-numbers-app.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(RomanNumbersCalculator.class.getResource("roman-numbers-app.fxml"));
         fxmlLoader.setController(this); // Postavljamo kontroler na trenutni objekat
 
         AnchorPane root = fxmlLoader.load(); // Učitaj FXML fajl
@@ -73,7 +73,10 @@ public class HelloApplication extends Application {
     // Poziv metode koja kupi unos u polje pri svakom keystroke-u, probjerava validnost. Ako je ok, setuj objekat
         // i ispisi decimalnu vrijednost ispod, a ako nije ok, ispisi poruku ispod polje
     numOne.textProperty().addListener((observable, oldValue, newValue) -> {
-        if(RomanNumber.isValidRomanNumber(newValue)) {
+        if(RomanNumber.isValidRomanNumber(newValue) && !RomanNumber.lesThenMChecker(newValue)) {
+            messageOne.setText("The value must be up to M (1000)");
+        }
+        else if(RomanNumber.isValidRomanNumber(newValue)) {
             rnOne.setRomanNumber(newValue);
             int rnValue = RomanNumber.romanToDecimal(rnOne.getRomanNumber());
             messageOne.setText(String.valueOf(rnValue));
@@ -85,7 +88,10 @@ public class HelloApplication extends Application {
     });
     // Za drugi broj
     numTwo.textProperty().addListener((observable, oldValue, newValue) -> {
-            if(RomanNumber.isValidRomanNumber(newValue)) {
+            if(RomanNumber.isValidRomanNumber(newValue) && !RomanNumber.lesThenMChecker(newValue)) {
+                messageTwo.setText("The value must be up to M (1000)");
+            }
+            else if(RomanNumber.isValidRomanNumber(newValue)) {
                 rnTwo.setRomanNumber(newValue);
                 int rnValue = RomanNumber.romanToDecimal(rnTwo.getRomanNumber());
                 messageTwo.setText(String.valueOf(rnValue));
@@ -106,7 +112,8 @@ public class HelloApplication extends Application {
             sumMessage.setText("Numbers must exist!");
         }else if(!(RomanNumber.isValidRomanNumber(rnOne.getRomanNumber()) && RomanNumber.isValidRomanNumber(rnTwo.getRomanNumber()))) {
             sumMessage.setText("Numbers must be valid!");
-        }else{
+        }
+        else{
             String romanNumberResult = RomanNumber.romanNumberSum(rnOne, rnTwo);
             sumMessage.setText(String.valueOf(RomanNumber.romanToDecimal(romanNumberResult)));
             result.setText(romanNumberResult);
@@ -178,9 +185,9 @@ public class HelloApplication extends Application {
         Media media = new Media(audioFilePath);
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setAutoPlay(true);
+        // Kada muzika zavrsi, pokreni ponovo
         mediaPlayer.setOnEndOfMedia(() -> {
-            mediaPlayer.seek(Duration.ZERO);  // Postavite vreme na početak
-            mediaPlayer.play();               // Ponovo pokrenite muziku
+            mediaPlayer.seek(Duration.ZERO);
         });
 
 // Muzika pocinje sa pokretanjem aplikacije. Klikom na dugme play/pause trigger-uje se ova metoda
