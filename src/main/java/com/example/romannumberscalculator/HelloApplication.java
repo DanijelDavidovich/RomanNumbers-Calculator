@@ -13,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.control.TextField;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 
 import java.io.IOException;
@@ -47,16 +48,17 @@ public class HelloApplication extends Application {
     private Label result;
     @FXML
     private Button sumbtn;
-//    @FXML
-////    private Button musicbtn;
-//    @FXML
-//    private ImageView musicbtnicon;
+    @FXML
+    private Button musicbtn;
+    @FXML
+    private ImageView btnicon;
 
     private MediaPlayer mediaPlayer;
     private boolean isPlaying = true;
-
     private Image playImage = new Image(getClass().getResourceAsStream("/images/play.png"));
     private Image pauseImage = new Image(getClass().getResourceAsStream("/images/pause.png"));
+
+
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -109,15 +111,14 @@ public class HelloApplication extends Application {
 
 
     musicbtn.setOnAction(event -> {
-
         if (isPlaying) {
             // Pauzira muziku
             mediaPlayer.pause();
-            musicbtnicon.setImage(playImage);
+            btnicon.setImage(playImage);
 //            playPauseButton.setText("Play"); // Promena teksta na dugmetu na "Play"
         } else {
             // Pokreće muziku
-            musicbtnicon.setImage(pauseImage);
+            btnicon.setImage(pauseImage);
             mediaPlayer.play();
 //            playPauseButton.setText("Pause"); // Promena teksta na dugmetu na "Pause"
         }
@@ -143,6 +144,11 @@ public class HelloApplication extends Application {
     // Ova metoda se automatski poziva nakon što je FXML učitan
     @FXML
     public void initialize() {
+
+
+
+        btnicon.setImage(pauseImage);
+
         // Ovdje možemo postaviti stil pozadine nakon što su svi objekti povezani
         if (rnbackground != null) {
             rnbackground.setStyle("-fx-background-color: #800000;");  // Postavite bordo boju pozadine
@@ -185,7 +191,10 @@ public class HelloApplication extends Application {
         Media media = new Media(audioFilePath);
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setAutoPlay(true);
-
+        mediaPlayer.setOnEndOfMedia(() -> {
+            mediaPlayer.seek(Duration.ZERO);  // Postavite vreme na početak
+            mediaPlayer.play();               // Ponovo pokrenite muziku
+        });
 
 
 
