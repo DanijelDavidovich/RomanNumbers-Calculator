@@ -4,13 +4,15 @@ import java.util.*;
 
 public class RomanNumber {
     private String romanNumber;
-    private ArrayList<String> simpleDigits = new ArrayList<>();
-    private ArrayList<String> complexDigits = new ArrayList<>();
+//    private ArrayList<String> simpleDigits = new ArrayList<>();
+//    private ArrayList<String> complexDigits = new ArrayList<>();
 
     private static ArrayList<String> simpleDigitList = new ArrayList<>();
     private static ArrayList<String> complexDigitList = new ArrayList<>();
     private static ArrayList<String> tempComplexDigits = new ArrayList<>();
     private static int sortCounter = 0;
+    private static boolean resultChecker = true;
+    private static String resultString = "";
 
     public RomanNumber() {}
     public RomanNumber(String romanNumber) {
@@ -23,16 +25,6 @@ public class RomanNumber {
         this.romanNumber = romanNumber;
     }
 
-    private void setSimpleDigits(ArrayList<String> simpleDigits) {
-        this.simpleDigits = simpleDigits;
-    }
-    private void setComplexDigit(ArrayList<String> complexDigits) {
-        this.complexDigits = complexDigits;
-    }
-
-    public void printRomanNumber() {
-        System.out.println(romanNumber);
-    }
 
     public int romanToDecimal(String romanNumber) {
         Map<Character, Integer> romanNumbersMap = new HashMap<Character, Integer>();
@@ -89,9 +81,10 @@ public class RomanNumber {
     };
 
     private static void separateDigits(RomanNumber romanNumber) {
+        resultChecker = true;
         String romanDigits = romanNumber.getRomanNumber();
-        ArrayList<String> complexDigits = new ArrayList<>();
-        ArrayList<String> simpleDigits = new ArrayList<>();
+//        ArrayList<String> complexDigits = new ArrayList<>();
+//        ArrayList<String> simpleDigits = new ArrayList<>();
         tempComplexDigits.clear();
         for(int i=0; i<6; i++){
             switch(i){
@@ -293,9 +286,11 @@ public class RomanNumber {
         System.out.println("Complex: " + complexDigitList);
 
 
-        if(isValidRomanNumberResult()){
+        if(isValidRomanNumberResult() && resultChecker){
+            resultChecker = false;
             String konacanRezultat = String.join("", simpleDigitList);
             System.out.println("Konacan rezultat" + konacanRezultat);
+            resultString = String.join("", simpleDigitList);
         }
 
         simpleDigitList.clear();
@@ -531,6 +526,10 @@ public class RomanNumber {
         for(Integer value : valueList){
             simpleDigitList.add(HashMapCounter.valueToRoman.get(value));
         }
+    }
+
+    public static String getResultString(){
+        return resultString;
     }
 
 
