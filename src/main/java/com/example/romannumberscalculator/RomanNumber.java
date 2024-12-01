@@ -318,7 +318,6 @@ public class RomanNumber {
         if(isValidRomanNumberResult() && resultChecker){
             resultChecker = false;
             String konacanRezultat = String.join("", simpleDigitList);
-            System.out.println("Konacan rezultat" + konacanRezultat);
             resultString = String.join("", simpleDigitList);
         }
 
@@ -364,13 +363,23 @@ public class RomanNumber {
         String temp="";
         if(countedA!=0 || countedB != 0){
             if(countedA == 2 && countedB == 0){
-                temp = HashMapCounter.countIV.get(countedA);
+                if(type == 'I')
+                    temp = HashMapCounter.countIV.get(countedA);
+                else if(type == 'X')
+                    temp = HashMapCounter.countXL.get(countedA);
+                else if(type == 'C')
+                    temp = HashMapCounter.countCD.get(countedA);
                 complexDigitList.remove(digitA);
                 complexDigitList.remove(digitA);
                 for(char c : temp.toCharArray() )
                     simpleDigitList.add(c + "");
             } else if(countedB == 2 && countedA == 0){
-                temp = HashMapCounter.countIX.get(countedB);
+                if(type == 'I')
+                    temp = HashMapCounter.countIX.get(countedB);
+                else if(type == 'X')
+                    temp = HashMapCounter.countXC.get(countedB);
+                else if(type == 'C')
+                    temp = HashMapCounter.countCM.get(countedB);
                 complexDigitList.remove(digitB);
                 complexDigitList.remove(digitB);
                 for(char c : temp.toCharArray() )
@@ -479,6 +488,7 @@ public class RomanNumber {
                 if (valueList.get(i) == 2 || valueList.get(i) == 4 || valueList.get(i) == 6
                     || valueList.get(i) == 8 || valueList.get(i) == 10 || valueList.get(i) == 12) {
                 int nextDigit = valueList.get(i + 1);
+                int prevDigit = valueList.get(i - 1);
                 System.out.println(nextDigit);
                 if (nextDigit == 1) {
                     if (valueList.get(i) == 2) {
@@ -489,6 +499,12 @@ public class RomanNumber {
                         valueList.remove(i + 1);
                     }
                 }
+                    if(prevDigit == 2){
+                        if (valueList.get(i) == 2){
+                            valueList.set(i, 4);
+                            valueList.remove(i -1);
+                        }
+                    }
                 if (nextDigit == 5) {
                     if (valueList.get(i) == 6){
                         valueList.set(i, 7);
@@ -496,6 +512,12 @@ public class RomanNumber {
                 } else if (valueList.get(i) == 8){
                         valueList.set(i, 9);
                         valueList.remove(i + 1);
+                    }
+                }
+                if(prevDigit == 7){
+                    if (valueList.get(i) == 6){
+                        valueList.set(i, 8);
+                        valueList.remove(i -1);
                     }
                 }
                 if (nextDigit == 9) {
@@ -506,6 +528,12 @@ public class RomanNumber {
                     else if (valueList.get(i) == 12){
                         valueList.set(i, 13);
                         valueList.remove(i + 1);
+                    }
+                }
+                if(prevDigit == 11){
+                    if (valueList.get(i) == 10){
+                        valueList.set(i, 12);
+                        valueList.remove(i -1);
                     }
                 }
 
