@@ -76,7 +76,7 @@ public class HelloApplication extends Application {
     numOne.textProperty().addListener((observable, oldValue, newValue) -> {
         if(RomanNumber.isValidRomanNumber(newValue)) {
             rnOne.setRomanNumber(newValue);
-            int rnValue = rnOne.romanToDecimal(rnOne.getRomanNumber());
+            int rnValue = RomanNumber.romanToDecimal(rnOne.getRomanNumber());
             messageOne.setText(String.valueOf(rnValue));
         } else{
             rnOne.setRomanNumber(newValue);
@@ -88,7 +88,7 @@ public class HelloApplication extends Application {
     numTwo.textProperty().addListener((observable, oldValue, newValue) -> {
             if(RomanNumber.isValidRomanNumber(newValue)) {
                 rnTwo.setRomanNumber(newValue);
-                int rnValue = rnTwo.romanToDecimal(rnTwo.getRomanNumber());
+                int rnValue = RomanNumber.romanToDecimal(rnTwo.getRomanNumber());
                 messageTwo.setText(String.valueOf(rnValue));
             } else{
                 rnTwo.setRomanNumber(newValue);
@@ -104,7 +104,7 @@ public class HelloApplication extends Application {
             sumMessage.setText("Numbers must be valid!");
         }else{
             String romanNumberResult = RomanNumber.romanNumberSum(rnOne, rnTwo);
-            sumMessage.setText("");
+            sumMessage.setText(String.valueOf(RomanNumber.romanToDecimal(romanNumberResult)));
             result.setText(romanNumberResult);
         }
     });

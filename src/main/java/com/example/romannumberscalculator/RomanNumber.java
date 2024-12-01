@@ -26,7 +26,7 @@ public class RomanNumber {
     }
 
 
-    public int romanToDecimal(String romanNumber) {
+    public static int romanToDecimal(String romanNumber) {
         Map<Character, Integer> romanNumbersMap = new HashMap<Character, Integer>();
         romanNumbersMap.put('I', 1);
         romanNumbersMap.put('V', 5);
@@ -64,9 +64,6 @@ public class RomanNumber {
     public static String romanNumberSum(RomanNumber romanNumberOne, RomanNumber romanNumberTwo) {
         simpleDigitList.clear();
         complexDigitList.clear();
-        ArrayList<String> simpleResult;
-        String complexResult[] = {};
-        String result = "";
 
         separateDigits(romanNumberOne);
         separateDigits(romanNumberTwo);
@@ -77,7 +74,7 @@ public class RomanNumber {
 //        complexResult = joinComplexDigits(romanNumberOne.complexDigits, romanNumberTwo.complexDigits);
 //        result = joinResults(simpleResult, complexResult);
 
-        return result;
+        return resultString;
     };
 
     private static void separateDigits(RomanNumber romanNumber) {
