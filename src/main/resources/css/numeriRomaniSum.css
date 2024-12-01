@@ -1,0 +1,141 @@
+
+
+
+#sumbtn {
+    -fx-background-color: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.3)); /* Stakleni gradijent */
+    -fx-background-radius: 50%; /* Krug */
+    -fx-border-color: rgba(238, 176, 0, 0.7); /* Zlatna boja sa transparentnošću */
+    -fx-border-radius: 50%; /* Krug za border */
+    -fx-border-width: 3px;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: rgb(238, 176, 0); /* Zlatni tekst, poluprozirni */
+
+    -fx-pref-width: 60px; /* Precizna širina dugmeta */
+    -fx-pref-height: 60px; /* Precizna visina dugmeta */
+    -fx-alignment: center; /* Poravnanje teksta unutar dugmeta */
+    -fx-cursor: hand; /* Promena kursora u ruku */
+
+    /* Senka za ispupčenost (delimični refleksivni efekat) */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.5, 0, 5); /* Blaga senka sa zamućenjem */
+
+    /* Refleksija na vrhu dugmeta kao da je stakleni materijal */
+    -fx-background-image: linear-gradient(to top left, rgba(255, 255, 255, 0.3), transparent 50%);
+}
+
+/* Efekat kada korisnik pređe mišem preko dugmeta (hover) */
+#sumbtn:hover {
+    -fx-background-color: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.2)); /* Vrlo blago blještavilo */
+    -fx-border-color: rgba(255, 215, 0, 0.65); /* Suptilno svetlija zlatna pri hover-u */
+    -fx-text-fill: rgb(255, 215, 0); /* Blago svetliji tekst */
+    -fx-effect: dropshadow(gaussian, rgba(255, 215, 0, 0.3), 4, 0.5, 0, 3); /* Smanjena senka pri hover-u */
+}
+
+/* Efekat kada korisnik pritisne dugme (click) */
+#sumbtn:pressed {
+    -fx-background-color: linear-gradient(to bottom, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.3)); /* Još blagi gradijent pri kliku */
+    -fx-border-color: rgba(255, 215, 0, 0.65); /* Suptilno svetlija zlatna pri kliku */
+    -fx-text-fill: rgb(255, 215, 0); /* Tekst još malo svetliji */
+    -fx-effect: dropshadow(gaussian, rgba(255, 215, 0, 0.4), 6, 0.6, 0, 4); /* Lagana senka pri kliku */
+}
+
+/* Početno stanje TextField-a */
+#numOne {
+    -fx-background-color: rgba(255, 255, 255, 0.1);  /* Bela pozadina sa 25% transparencijom */
+    -fx-border-color: rgba(255, 215, 0, 0.9);  /* Zlatni border sa 25% transparencijom */
+    -fx-border-width: 2px;
+    -fx-text-fill: rgba(255, 215, 0, 0.9);;  /* Početna boja teksta (crna) */
+    -fx-font-size: 12px;  /* Postavite željenu veličinu fonta */
+    -fx-border-radius: 5%;
+}
+
+/* Kada se TextField klikne i počne unositi tekst */
+#numOne:focused {
+    -fx-background-color: rgba(255, 255, 255, 0.5);  /* Pozadina sa 75% transparencijom */
+    -fx-border-color: rgba(255, 215, 0, 0.26);  /* Zlatni border sa 75% transparencijom */
+    -fx-text-fill: #800000;  /* Tamno bordo boja teksta */
+    -fx-font-family: Constantia;
+}
+
+#numTwo {
+    -fx-background-color: rgba(255, 255, 255, 0.1);  /* Bela pozadina sa 25% transparencijom */
+    -fx-border-color: rgba(255, 215, 0, 0.9);  /* Zlatni border sa 25% transparencijom */
+    -fx-border-width: 2px;
+    -fx-text-fill: rgba(255, 215, 0, 0.9);;  /* Početna boja teksta (crna) */
+    -fx-font-size: 12px;  /* Postavite željenu veličinu fonta */
+    -fx-border-radius: 5%;
+}
+
+/* Kada se TextField klikne i počne unositi tekst */
+#numTwo:focused {
+    -fx-background-color: rgba(255, 255, 255, 0.5);  /* Pozadina sa 75% transparencijom */
+    -fx-border-color: rgba(255, 215, 0, 0.26);  /* Zlatni border sa 75% transparencijom */
+    -fx-text-fill: #800000;  /* Tamno bordo boja teksta */
+    -fx-font-family: Constantia;
+
+}
+
+#result{
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-border-radius: 5%;
+    -fx-border-color: rgba(255, 215, 0, 0.9);
+    -fx-border-width: 1px;
+    -fx-alignment: center;
+    -fx-font-weight: bold;
+    -fx-text-fill: rgba(255, 215, 0, 0.9);
+}
+
+#messageOne, #messageTwo{
+    -fx-padding: 1px 0 0 0;
+    -fx-text-fill: rgba(255, 215, 0, 0.9);
+    -fx-font-weight: bold;
+}
+
+#sumMessage{
+    -fx-text-fill: rgba(255, 215, 0, 0.9);
+}
+
+#note{
+    -fx-arc-height: 15px;
+}
+
+#musicbtn{
+    -fx-background-color: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.3)); /* Stakleni gradijent */
+    -fx-background-radius: 50%; /* Krug */
+    -fx-border-color: rgba(238, 176, 0, 0.7); /* Zlatna boja sa transparentnošću */
+    -fx-border-radius: 50%; /* Krug za border */
+    -fx-border-width: 1px;
+    -fx-font-size: 7px;
+    -fx-font-weight: bold;
+    -fx-text-fill: rgb(238, 176, 0); /* Zlatni tekst, poluprozirni */
+
+    -fx-pref-width: 10px; /* Precizna širina dugmeta */
+    -fx-pref-height: 10px; /* Precizna visina dugmeta */
+    -fx-alignment: center; /* Poravnanje teksta unutar dugmeta */
+    -fx-cursor: hand; /* Promena kursora u ruku */
+
+    /* Senka za ispupčenost (delimični refleksivni efekat) */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.5, 0, 5); /* Blaga senka sa zamućenjem */
+
+    /* Refleksija na vrhu dugmeta kao da je stakleni materijal */
+    -fx-background-image: linear-gradient(to top left, rgba(255, 255, 255, 0.3), transparent 50%);
+}
+
+#musicbtn:hover {
+    -fx-background-color: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.2)); /* Vrlo blago blještavilo */
+    -fx-border-color: rgba(255, 215, 0, 0.65); /* Suptilno svetlija zlatna pri hover-u */
+    -fx-text-fill: rgb(255, 215, 0); /* Blago svetliji tekst */
+    -fx-effect: dropshadow(gaussian, rgba(255, 215, 0, 0.3), 4, 0.5, 0, 3); /* Smanjena senka pri hover-u */
+}
+
+#musicbtn:pressed {
+    -fx-background-color: linear-gradient(to bottom, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.3)); /* Još blagi gradijent pri kliku */
+    -fx-border-color: rgba(255, 215, 0, 0.65); /* Suptilno svetlija zlatna pri kliku */
+    -fx-text-fill: rgb(255, 215, 0); /* Tekst još malo svetliji */
+    -fx-effect: dropshadow(gaussian, rgba(255, 215, 0, 0.4), 6, 0.6, 0, 4); /* Lagana senka pri kliku */
+}
+
+#btnicon{
+    -fx-fit-width: 10px;
+    -fx-fit-height: 10px;
+}
