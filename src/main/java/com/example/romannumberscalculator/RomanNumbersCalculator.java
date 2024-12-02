@@ -74,7 +74,7 @@ public class RomanNumbersCalculator extends Application {
         // i ispisi decimalnu vrijednost ispod, a ako nije ok, ispisi poruku ispod polje
     numOne.textProperty().addListener((observable, oldValue, newValue) -> {
         if(RomanNumber.isValidRomanNumber(newValue) && !RomanNumber.lesThenMChecker(newValue)) {
-            messageOne.setText("The value must be up to M (1000)");
+            messageOne.setText("The value must be <MM (2000)");
         }
         else if(RomanNumber.isValidRomanNumber(newValue)) {
             rnOne.setRomanNumber(newValue);
@@ -89,7 +89,7 @@ public class RomanNumbersCalculator extends Application {
     // Za drugi broj
     numTwo.textProperty().addListener((observable, oldValue, newValue) -> {
             if(RomanNumber.isValidRomanNumber(newValue) && !RomanNumber.lesThenMChecker(newValue)) {
-                messageTwo.setText("The value must be up to M (1000)");
+                messageTwo.setText("The value must be <MM (2000)");
             }
             else if(RomanNumber.isValidRomanNumber(newValue)) {
                 rnTwo.setRomanNumber(newValue);
