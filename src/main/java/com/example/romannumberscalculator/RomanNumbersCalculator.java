@@ -52,6 +52,7 @@ public class RomanNumbersCalculator extends Application {
     private MediaPlayer mediaPlayer; // Kreira se muzicki player
     private boolean isPlaying = true; // Setujemo da muzika pocinje pri pokretanju aplikacije
 
+//    Ikonice za button za pause i play muzike
     private Image playImage = new Image(getClass().getResourceAsStream("/images/play.png"));
     private Image pauseImage = new Image(getClass().getResourceAsStream("/images/pause.png"));
 
@@ -81,7 +82,6 @@ public class RomanNumbersCalculator extends Application {
             int rnValue = RomanNumber.romanToDecimal(rnOne.getRomanNumber());
             messageOne.setText(String.valueOf(rnValue));
         } else{
-            rnOne.setRomanNumber(newValue);
             messageOne.setText("Invalid Roman Number!");
         }
 
@@ -96,7 +96,6 @@ public class RomanNumbersCalculator extends Application {
                 int rnValue = RomanNumber.romanToDecimal(rnTwo.getRomanNumber());
                 messageTwo.setText(String.valueOf(rnValue));
             } else{
-                rnTwo.setRomanNumber(newValue);
                 messageTwo.setText("Invalid Roman Number!");
             }
         });
@@ -106,19 +105,21 @@ public class RomanNumbersCalculator extends Application {
 //        Klikom na button Sum, trigger-uje se metoda. Provjerava da li brojevi postoje. Ako ne, ispise poruku.
 //        Ako da, provjerava validnost. Ako bar jedan nije validan, ispise poruku.
 //        Ako postoje i ako su validni, poziva se staticka metoda za sumiranje, dobijamo String koji ispisemo
-//        a ispod polja se ispise i njegova decimalna vrijednost.
-    sumbtn.setOnAction(event -> {
-        if(rnOne.getRomanNumber() == "" || rnTwo.getRomanNumber() == "") {
-            sumMessage.setText("Numbers must exist!");
-        }else if(!(RomanNumber.isValidRomanNumber(rnOne.getRomanNumber()) && RomanNumber.isValidRomanNumber(rnTwo.getRomanNumber()))) {
-            sumMessage.setText("Numbers must be valid!");
-        }
-        else{
-            String romanNumberResult = RomanNumber.romanNumberSum(rnOne, rnTwo);
-            sumMessage.setText(String.valueOf(RomanNumber.romanToDecimal(romanNumberResult)));
-            result.setText(romanNumberResult);
-        }
-    });
+//        a ispod polja se ispise i njegova vrijednost arapskim ciframa.
+
+            sumbtn.setOnAction(event -> {
+                if (rnOne.getRomanNumber() == "" || rnTwo.getRomanNumber() == "") {
+                    sumMessage.setText("Numbers must exist!");
+                } else if (!(RomanNumber.isValidRomanNumber(rnOne.getRomanNumber()) && RomanNumber.isValidRomanNumber(rnTwo.getRomanNumber()))) {
+                    sumMessage.setText("Numbers must be valid!");
+                } else {
+                        String romanNumberResult = RomanNumber.romanNumberSum(rnOne, rnTwo);
+                    sumMessage.setText(String.valueOf(RomanNumber.romanToDecimal(romanNumberResult)));
+                    result.setText(romanNumberResult);
+
+                }
+            });
+
 
 
 
@@ -130,7 +131,7 @@ public class RomanNumbersCalculator extends Application {
 
         stage.getIcons().add(icon); // Postavljanje ikonice
 
-        stage.setResizable(false); // Zabrana minenjanja dimenzija prozora
+        stage.setResizable(false); // Zabrana mijenjanja dimenzija prozora
         stage.setTitle("Numeri Romani Sum"); // Naslov
         scene.getStylesheets().add(getClass().getResource("/css/numeriRomaniSum.css").toExternalForm()); // Povezivanje sa CSS file-om
         stage.setScene(scene); // Setovanje scene
@@ -141,42 +142,44 @@ public class RomanNumbersCalculator extends Application {
     @FXML
     public void initialize() {
 
-        btnicon.setImage(pauseImage);
-
-        // Ovdje možemo postaviti stil pozadine nakon što su svi objekti povezani
-        if (rnbackground != null) {
-            rnbackground.setStyle("-fx-background-color: #800000;");  // Postavite bordo boju pozadine
-        } else {
-            System.out.println("AnchorPane nije učitan.");
+        if(btnicon != null) {
+            btnicon.setImage(pauseImage); // Postavljanje pause ikonicu na button
+        }else{
+            System.out.println("Play/Pause button not loaded.");
         }
 
-        // Postavite sliku na ImageView sa fx:id="spqr"
+        if (rnbackground != null) {
+            rnbackground.setStyle("-fx-background-color: #800000;");  // Postavlja se bordo boja podzadine
+        } else {
+            System.out.println("AnchorPane not loaded..");
+        }
+
         if (spqr != null) {
             Image spqrimg = new Image(getClass().getResource("/images/spqr-01.png").toExternalForm());
-            spqr.setImage(spqrimg);  // Postavljanje slike na ImageView
+            spqr.setImage(spqrimg);  // Postavljanje gornje slike
         } else {
-            System.out.println("ImageView 'spqr' nije učitan.");
+            System.out.println("ImageView 'spqr' not loaded..");
         }
 
         if (coatofarms != null) {
             Image coatofarmsimg = new Image(getClass().getResource("/images/coatofarms.png").toExternalForm());
-            coatofarms.setImage(coatofarmsimg);  // Postavljanje slike na ImageView
+            coatofarms.setImage(coatofarmsimg);  // Postavljanje donje slike
         } else {
-            System.out.println("ImageView 'spqr' nije učitan.");
+            System.out.println("ImageView 'coatofarms' not loaded.");
         }
 
         if (title != null) {
             Image titleimg = new Image(getClass().getResource("/images/title.png").toExternalForm());
-            title.setImage(titleimg);  // Postavljanje slike na ImageView
+            title.setImage(titleimg);  // Postavljanje naslovne ikonice
         } else {
-            System.out.println("ImageView 'spqr' nije učitan.");
+            System.out.println("Title icon not loaded..");
         }
 
         if (note != null) {
             Image noteIcon = new Image(getClass().getResource("/images/sound.png").toExternalForm());
-            note.setImage(noteIcon);  // Postavljanje slike na ImageView
+            note.setImage(noteIcon);  // Postavljanje ikonice note
         } else {
-            System.out.println("ImageView 'spqr' nije učitan.");
+            System.out.println("Note icon not loaded.");
         }
 
 // PODZADINSKA MUZIKA

@@ -21,11 +21,13 @@ public class RomanNumber {
     // Konacan rezultat
     private static String resultString = "";
 
-    //  SETERI I GETERI
+    // KONSTRUKTORI
     public RomanNumber() {}
     public RomanNumber(String romanNumber) {
         this.romanNumber = romanNumber;
     }
+
+    //  SETERI I GETERI
     public String getRomanNumber() {
         return romanNumber;
     }
@@ -35,7 +37,8 @@ public class RomanNumber {
 
     //  METODE
 
-    // Pomocna metoda koja pretvara rimski broj u decimalni i sluzi samo konverziju prije ispisa
+    // Pomocna metoda koja pretvara rimski broj u decimalni i sluzi samo za konverziju pri ispisu
+    // brojeva koji se unose ili rezultata
     public static int romanToDecimal(String romanNumber) {
         Map<Character, Integer> romanNumbersMap = new HashMap<Character, Integer>();
         romanNumbersMap.put('I', 1);
@@ -67,6 +70,7 @@ public class RomanNumber {
         return romanNumber != null && romanNumber.matches(romanRegex);
     }
 
+    // Metoda koja obezbijedjuje unos manji od 2000
     public static boolean lesThenMChecker(String romanNumber) {
         String romanRegex = "^(M{0,1})" +
                 "(CM|CD|D?C{0,3})" +
@@ -82,6 +86,7 @@ public class RomanNumber {
     }
 
 //  SUMIRANJE
+
 //    Glavna metoda za sumiranje 2 rimska broja
     public static String romanNumberSum(RomanNumber romanNumberOne, RomanNumber romanNumberTwo) {
 //        Brise prethodno stanje listi (kada se izmijene unosi brojeva)
@@ -100,7 +105,7 @@ public class RomanNumber {
         return resultString;
     };
 
-//    Metoda za separaciju simple i complex cifri te njihovo smijestanje u odredjene liste
+//    Metoda za separaciju simple i complex cifri te njihovo smijestanje u odgovarajuce liste
     private static void separateDigits(RomanNumber romanNumber) {
         resultChecker = true;
         String romanDigits = romanNumber.getRomanNumber(); // Vraca broj kao String
@@ -140,7 +145,7 @@ public class RomanNumber {
                     break;
             }
         }
-//        Kako su nam sada ostale samo simple cifre, smjestiti ih kao char-ove u njihovu listu
+//        Kako su nam sada ostale samo simple cifre, smjestiti ih kao char-ove, odnosno Stringove u njihovu listu
         char[] simpleNumbers = romanDigits.toCharArray();
         for(char c : simpleNumbers){
             simpleDigitList.add(c + "");
@@ -149,12 +154,13 @@ public class RomanNumber {
 
     }
 
-//    Metoda koja spaja simple cifre oba broja u jednu listu, potom broji koliko kojih ima. Za slucaj da se
+//    Metoda koja obradjuje ujedinjenu simple listu, tako sto prvo broji koliko kojih ima. Za slucaj da se
 //    pojave nevalidni oblici poput IIII+, ili VV+ itd. pretvori ih u validan: IV, X
 //    te ako kao takvi postanu complex oblika, prebaci ih u complex listu, a za slucaj da se
 //    u simple listi nadju kompleksne cifre pri validnom obliku broja, ostaju tu.
-//    Ukoliko complex lista nije prazna, poziva se metoda za njenu obradu.
-//    Ukoliko je prazna, poziva se metoda za sortiranje i dodatna izracunavanja ukoliko se pojave nevalidni oblici.
+//    Ukoliko complex lista nije prazna, poziva se metoda za njenu obradu (joinComplexList).
+//    Ukoliko je prazna, poziva se metoda za sortiranje i dodatna izracunavanja ukoliko se pojave nevalidni oblici
+//    (romanDigitsSortAndEdit).
 //    Te na kraju, kada se sva izracunavanja zavrse a broj je validan, smijesta se rezultat i cisti lista
     private static void joinSimpleDigits(){
         simpleSort();
@@ -310,6 +316,7 @@ public class RomanNumber {
             if(sortCounter!=5 || (complexDigitList.size()==0 && !isValidRomanNumberResult())) {
                 sortCounter++;
                 simpleDigitList.addAll(tempComplexDigits);
+
                 romanDigitsSortAndEdit();
             }
         }
@@ -317,17 +324,16 @@ public class RomanNumber {
 //        Smijestanje rezultata u staticki atribut za rezultat odakle ce se kasnije ispisati
         if(isValidRomanNumberResult() && resultChecker){
             resultChecker = false;
-            String konacanRezultat = String.join("", simpleDigitList);
             resultString = String.join("", simpleDigitList);
         }
 
-//        Ciscenje liste za sledece brojeve
+//        Posto je rezultat ispisan, ciscenje liste za sledece brojeve
         simpleDigitList.clear();
 
     }
 
 //    Metoda koja se bavi obradom liste complex cifara, te kada ih obradi i vrati u listu simple cifara
-//    poziva ponovo petodu za obradu liste simple cifara
+//    poziva ponovo metodu za obradu liste simple cifara
     private static void joinComplexDigits(){
 
         int countedIV = 0;
@@ -348,7 +354,7 @@ public class RomanNumber {
 
         complexDigitList.clear();
 
-//        Kako se mogu sabirati parovi samo istog tipa (IV-IX, XL-xC, CD-CM), ovde se u pomocnu metodu
+//        Kako se mogu sabirati parovi samo istog tipa (IV-IX, XL-XC, CD-CM), ovde se u pomocnu metodu
 //        za obradu salje koliko ima kojih cifara, kog su tipa i kako izgledaju
         typeComplexDigitsHandler(countedIV, countedIX, 'I', "IV", "IX");
         typeComplexDigitsHandler(countedXL, countedXC, 'X', "XL", "XC");
@@ -484,60 +490,79 @@ public class RomanNumber {
 
         if(!isValidRomanNumberResult())
             for (int i = 0; i < valueList.size(); i++) {
-                System.out.println(valueList.get(i));
+                int nextDigit = 0;
+                int prevDigit = 0;
                 if (valueList.get(i) == 2 || valueList.get(i) == 4 || valueList.get(i) == 6
                     || valueList.get(i) == 8 || valueList.get(i) == 10 || valueList.get(i) == 12) {
-                int nextDigit = valueList.get(i + 1);
-                int prevDigit = valueList.get(i - 1);
-                System.out.println(nextDigit);
-                if (nextDigit == 1) {
-                    if (valueList.get(i) == 2) {
-                        valueList.set(i, 3);
-                        valueList.remove(i + 1);
-                    } else if (valueList.get(i) == 4){
-                        valueList.set(i, 5);
-                        valueList.remove(i + 1);
+                    if(i < valueList.size()-1)
+                        nextDigit = valueList.get(i + 1);
+                    if(i > 0)
+                        prevDigit = valueList.get(i - 1);
+                    if (nextDigit == 1) {
+                        if (valueList.get(i) == 2) {
+                            valueList.set(i, 3);
+                            valueList.remove(i + 1);
+                        } else if (valueList.get(i) == 4){
+                            valueList.set(i, 5);
+                            valueList.remove(i + 1);
+                        }
                     }
-                }
-                    if(prevDigit == 2){
+                    if(prevDigit == 3){
                         if (valueList.get(i) == 2){
                             valueList.set(i, 4);
                             valueList.remove(i -1);
                         }
                     }
-                if (nextDigit == 5) {
-                    if (valueList.get(i) == 6){
-                        valueList.set(i, 7);
-                        valueList.remove(i + 1);
-                } else if (valueList.get(i) == 8){
-                        valueList.set(i, 9);
-                        valueList.remove(i + 1);
+                    if(nextDigit == 3){
+                        if(valueList.get(i) == 4){
+                            valueList.set(i, 5);
+                            valueList.set(i+1, 2);
+                        }
                     }
-                }
-                if(prevDigit == 7){
-                    if (valueList.get(i) == 6){
-                        valueList.set(i, 8);
-                        valueList.remove(i -1);
+                    if (nextDigit == 5) {
+                        if (valueList.get(i) == 6){
+                            valueList.set(i, 7);
+                            valueList.remove(i + 1);
+                        } else if (valueList.get(i) == 8){
+                            valueList.set(i, 9);
+                            valueList.remove(i + 1);
+                        }
                     }
-                }
-                if (nextDigit == 9) {
-                    if (valueList.get(i) == 10){
-                        valueList.set(i, 11);
-                        valueList.remove(i + 1);
+                    if(prevDigit == 7){
+                        if (valueList.get(i) == 6){
+                            valueList.set(i, 8);
+                            valueList.remove(i -1);
+                        }
                     }
-                    else if (valueList.get(i) == 12){
-                        valueList.set(i, 13);
-                        valueList.remove(i + 1);
+                    if(nextDigit == 7){
+                        if(valueList.get(i) == 8){
+                            valueList.set(i, 9);
+                            valueList.set(i+1, 6);
+                        }
                     }
-                }
-                if(prevDigit == 11){
-                    if (valueList.get(i) == 10){
-                        valueList.set(i, 12);
-                        valueList.remove(i -1);
-                    }
-                }
 
-
+                    if (nextDigit == 9) {
+                        if (valueList.get(i) == 10){
+                            valueList.set(i, 11);
+                            valueList.remove(i + 1);
+                        }
+                        else if (valueList.get(i) == 12){
+                            valueList.set(i, 13);
+                            valueList.remove(i + 1);
+                        }
+                    }
+                    if(prevDigit == 11){
+                        if (valueList.get(i) == 10){
+                            valueList.set(i, 12);
+                            valueList.remove(i -1);
+                        }
+                    }
+                    if(nextDigit == 11){
+                        if(valueList.get(i) == 12){
+                            valueList.set(i, 13);
+                            valueList.set(i+1, 10);
+                        }
+                    }
             }
         }
 

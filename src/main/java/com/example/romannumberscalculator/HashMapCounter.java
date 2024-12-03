@@ -24,6 +24,9 @@ public class HashMapCounter {
 
     // Inicijalizacija Hash mapa
     static {
+//        Pri spajanju 2 broja u jedan, svaka od cifara I X C M moze se pojaviti do 6 puta
+//        Ovo su njihove sume u zavisnosti koliko puta se pojave
+
         countI.put(1, "I");
         countI.put(2, "II");
         countI.put(3, "III");
@@ -49,6 +52,9 @@ public class HashMapCounter {
         countM.put(2, "MM");
         countM.put(3, "MMM");
 
+//        Pri spajanju 2 broja u 1, cifre V L i D se mogu pojaviti do 2 puta
+//        Ovo su sume za svaki njihov slucaj
+
         countV.put(1, "V");
         countV.put(2, "X");
 
@@ -58,6 +64,7 @@ public class HashMapCounter {
         countD.put(1, "D");
         countD.put(2, "M");
 
+//        Ovo su hash mape za slucajeve suma kada se u spojenom broju pojavljuju 1, 2 ili 3 ''slozena'' broja
         countIV.put(1, "IV");
         countIV.put(2, "VIII");
         countIV.put(3, "XII");
@@ -82,6 +89,8 @@ public class HashMapCounter {
         countCM.put(2, "MDCCC");
         countCM.put(3, "MMMDCC");
 
+//        Ovo su hash mape za sortiranje i laksu obradu nevalidnih slucajeva kada se zajedno nadju
+//        npr. IX I -> (X), ili IX V -> (X IV)
         valueToRoman.put(1, "I");
         valueToRoman.put(2, "IV");
         valueToRoman.put(3, "V");
